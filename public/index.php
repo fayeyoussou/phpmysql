@@ -19,9 +19,8 @@ try {
     $authorsTable);
 
     $action = $_GET['action'] ?? 'home';
-    $page = $jokeController->$action();
+    // $page = $jokeController->$action();
     // $output = $page['output'];
-    $title = $page['title'];
     // if (isset($page['variables'])) extract($page['variables']);
     // ob_start();
     // // echo ('page :');
@@ -30,6 +29,15 @@ try {
     // // echo $page['template'];
     // // echo 'what';
     // include __DIR__.'/../templates/'.$page['template'];
+    if ($action == strtolower($action)) {
+        $page = $jokeController->$action();
+    }
+    else {
+        http_response_code(301);
+        header('location: index.php?action=' .strtolower($action));
+    }
+
+    $title = $page['title'];
     $output = loadTemplate($page['template'],$page['variables']??[]);
 
     } catch (PDOException $e) {
