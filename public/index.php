@@ -1,11 +1,32 @@
 <?php
+try {
+    include __DIR__ . '/../includes/DatabaseConnection.php';
+    include __DIR__ . '/../classes/DatabaseTable.php';
+    include __DIR__ . '/../controllers/JokeController.php';
 
-$title = 'Internet Joke Database';
+    $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
+    $authorsTable = new DatabaseTable($pdo, 'author', 'id');
+    $jokeController = new JokeController($jokesTable, 
+    $authorsTable);
 
-ob_start();
+    if (isset($_GET['edit'])) {
+        $page = $jokeController->edit();
+    } elseif (isset($_GET['delete'])) {
+        $page = $jokeController->delete();
+    } elseif (isset($_GET['list'])) {
+        $page = $jokeController->list();
+    } else {
+        $page = $jokeController->home();
+    }
 
-include  __DIR__ . '/../templates/home.html.php';
+    $title = $page['title'];
 
-$output = ob_get_clean();
-
-include  __DIR__ . '/../templates/layout.html.php';
+    } catch (PDOException $e) {
+        $title = 'An error has occurred';
+    
+        $output = 'Database error: ' . $e->getMessage() . ' in '
+         . $e->getFile() . ':' . $e->getLine();
+    }
+    
+    include  __DIR__ . '/../templates/layout.html.php';
+    

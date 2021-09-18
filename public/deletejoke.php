@@ -5,9 +5,7 @@ try {
 
 	$jokesTable = new DatabaseTable($pdo, 'joke', 'id');
 
-	$jokesTable->delete($_POST['id']);
-
-	header('location: jokes.php');
+	
 }
 catch (PDOException $e) {
 	$title = 'An error has occurred';
