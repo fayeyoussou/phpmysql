@@ -20,6 +20,7 @@ try {
 			'name' => $author['name'],
 			'email' => $author['email']
 		];
+		$check = 'master'
 
 	}
 
