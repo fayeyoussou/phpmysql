@@ -10,8 +10,7 @@ class JokeController
         $this->jokesTable = $jokesTable;
         $this->authorsTable = $authorsTable;
     }
-    public function list()
-    {
+    public function list() {
         $result = $this->jokesTable->findAll();
 
         $jokes = [];
@@ -31,31 +30,23 @@ class JokeController
         $title = 'Joke list';
 
         $totalJokes = $this->jokesTable->total();
-
-        ob_start();
-
-        include  __DIR__ . '/../templates/jokes.html.php';
-
-        $output = ob_get_clean();
-        return ['output' => $output, 'title' => $title];
+        return [
+            'template' => 'jokes.html.php', 
+            'title' => $title,
+            'variables'=> [
+                'totalJokes'=>$totalJokes,
+                'jokes' => $jokes
+            ]
+        ];
     }
     public function home() {
         $title = 'Internet Joke Database';
-
-        ob_start();
-
-        include  __DIR__ . '/../templates/home.html.php';
-
-        $output = ob_get_clean();
-
-        include  __DIR__ . '/../templates/layout.html.php';
-        return ['output' => $output, 'title' => $title];
-
+        return ['template' => 'home.html.php', 'title' => $title];
     }
     public function delete() {
         $this->jokesTable->delete($_POST['id']);
 
-	    header('location: jokes.php');
+	    header('location: ?action=list');
     }
     public function edit () {
         if (isset($_POST['joke'])) {
@@ -66,7 +57,7 @@ class JokeController
     
             $this->jokesTable->save($joke);
             
-            header('location: jokes.php');  
+            header('location: ?action=list');  
     
         }
         else {
@@ -76,13 +67,13 @@ class JokeController
             }
     
             $title = 'Edit joke';
-    
-            ob_start();
-    
-            include  __DIR__ . '/../templates/editjoke.html.php';
-    
-            $output = ob_get_clean();
-            return ['output' => $output, 'title' => $title];
+                return [
+                'template' => 'editjoke.html.php',
+                'title' => $title,
+                'variables' => [
+                    'joke' => $joke?? null
+                    ]
+                ];
 
         }
     }
