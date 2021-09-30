@@ -16,7 +16,7 @@ try {
 	$authorsTable = new DatabaseTable($pdo, 'author', 'id');
 
 
-	$route = $_GET['route'] ?? 'joke/home'; //if no route variable is set, use 'joke/home'
+	$route = $_REQUEST['q'] ?? 'joke/home'; //if no route variable is set, use 'joke/home'
 
 	if ($route == strtolower($route)) {
 

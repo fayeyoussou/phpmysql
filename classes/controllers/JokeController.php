@@ -46,7 +46,7 @@ class JokeController
     public function delete() {
         $this->jokesTable->delete($_POST['id']);
 
-	    header('location: ?action=list');
+	    header('location: /joke/public/joke/list');
     }
     public function edit () {
         if (isset($_POST['joke'])) {
@@ -57,7 +57,7 @@ class JokeController
     
             $this->jokesTable->save($joke);
             
-            header('location: ?action=list');  
+            header('location: /joke/public/joke/list');  
     
         }
         else {
