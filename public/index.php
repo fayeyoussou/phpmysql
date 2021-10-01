@@ -1,9 +1,9 @@
 <?php
 
 try {
+	include __DIR__ . '/../includes/autoload.php';
 	$route = $_REQUEST['q'] ?? 'joke/home'; //if no route variable is set, use 'joke/home'
-	include __DIR__ .'/../classes/EntryPoint.php';
-	$entryPoint = new EntryPoint($route);
+	$entryPoint = new EntryPoint($route,new IjdbRoutes());
 	// (new EntryPoint($route))->run();
 	$entryPoint->run();
 	
