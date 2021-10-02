@@ -1,5 +1,7 @@
 <?php
-class JokeController
+namespace Ijdb\Controllers;
+use \Youtech\DatabaseTable;
+class Joke
 {
     private $authorsTable;
     private $jokesTable;
@@ -52,7 +54,7 @@ class JokeController
         if (isset($_POST['joke'])) {
 
             $joke = $_POST['joke'];
-            $joke['jokedate'] = new DateTime();
+            $joke['jokedate'] = new \DateTime();
             $joke['authorId'] = 1;
     
             $this->jokesTable->save($joke);

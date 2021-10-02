@@ -1,6 +1,6 @@
 <?php
-
-class RegisterController {
+namespace Ijdb\Controllers;
+class Register {
     public function __construct ($authors)
     {
         

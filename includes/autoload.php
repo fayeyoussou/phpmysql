@@ -1,6 +1,5 @@
 <?php
 function autoloader($className) {
-    $file = __DIR__ . '/../classes/'.$className.'.php';
-    include $file;
+    include __DIR__ . '/../classes/'.str_replace('\\','/',$className).'.php';
 }
 spl_autoload_register('autoloader');
