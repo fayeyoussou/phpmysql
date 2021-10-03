@@ -2,7 +2,7 @@
 
 namespace Ijdb;
 
-class IjdbRoutes
+class IjdbRoutes implements \Youtech\Routes
 {
     public function getRoutes()
     {

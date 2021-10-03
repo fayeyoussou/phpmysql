@@ -5,7 +5,7 @@ class EntryPoint {
 	private $method;
 	private $routes;
 
-	public function __construct($route, $method, $routes) {
+	public function __construct(string $route, string $method,\Youtech\Routes $routes) {
 		$this->route = $route;
 		$this->routes = $routes;
 		$this->method = $method;
