@@ -11,7 +11,27 @@ class IjdbRoutes implements \Youtech\Routes
         $jokesTable = new \youtech\DatabaseTable($pdo, 'joke', 'id');
         $authorsTable = new \Youtech\DatabaseTable($pdo, 'author', 'id');
         $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
+        $authorController = new \Ijdb\Controllers\Register($authorsTable);
+
+
         $routes = [
+            'author/register'=>[
+                'POST'=> [
+                    'controller' => $authorController,
+                    'action' => 'registerUser'
+                ],
+                'GET'=> [
+                    'controller' => $authorController,
+                    'action' => 'registrationForm'
+                ],
+                
+            ],
+            'author/success'=>[
+                'GET'=> [
+                    'controller' => $authorController,
+                    'action'=> 'success'
+                ]
+            ],
 			'joke/edit' => [
 				'POST' => [
 					'controller' => $jokeController,
