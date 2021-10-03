@@ -1,6 +1,9 @@
 <?php
+
 namespace Ijdb\Controllers;
+
 use \Youtech\DatabaseTable;
+
 class Joke
 {
     private $authorsTable;
@@ -12,7 +15,8 @@ class Joke
         $this->jokesTable = $jokesTable;
         $this->authorsTable = $authorsTable;
     }
-    public function list() {
+    public function list()
+    {
         $result = $this->jokesTable->findAll();
 
         $jokes = [];
@@ -33,50 +37,46 @@ class Joke
 
         $totalJokes = $this->jokesTable->total();
         return [
-            'template' => 'jokes.html.php', 
+            'template' => 'jokes.html.php',
             'title' => $title,
-            'variables'=> [
-                'totalJokes'=>$totalJokes,
+            'variables' => [
+                'totalJokes' => $totalJokes,
                 'jokes' => $jokes
             ]
         ];
     }
-    public function home() {
+    public function home()
+    {
         $title = 'Internet Joke Database';
         return ['template' => 'home.html.php', 'title' => $title];
     }
-    public function delete() {
+    public function delete()
+    {
         $this->jokesTable->delete($_POST['id']);
 
-	    header('location: /joke/public/joke/list');
+        header('location: /joke/public/joke/list');
     }
-    public function edit () {
-        if (isset($_POST['joke'])) {
-
-            $joke = $_POST['joke'];
-            $joke['jokedate'] = new \DateTime();
-            $joke['authorId'] = 1;
-    
-            $this->jokesTable->save($joke);
-            
-            header('location: /joke/public/joke/list');  
-    
+    public function saveEdit()
+    {
+        $joke = $_POST['joke'];
+        $joke['jokedate'] = new \DateTime();
+        $joke['authorId'] = 1;
+        $this->jokesTable->save($joke);
+        header('location: /joke/public/joke/list');
+    }
+    public function edit()
+    {
+        if (isset($_GET['id'])) {
+            $joke = $this->jokesTable->findById($_GET['id']);
         }
-        else {
-    
-            if (isset($_GET['id'])) {
-                $joke = $this->jokesTable->findById($_GET['id']);
-            }
-    
-            $title = 'Edit joke';
-                return [
-                'template' => 'editjoke.html.php',
-                'title' => $title,
-                'variables' => [
-                    'joke' => $joke?? null
-                    ]
-                ];
 
-        }
+        $title = 'Edit joke';
+        return [
+            'template' => 'editjoke.html.php',
+            'title' => $title,
+            'variables' => [
+                'joke' => $joke ?? null
+            ]
+        ];
     }
 }
