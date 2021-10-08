@@ -3,17 +3,21 @@
 namespace Ijdb\Controllers;
 
 use \Youtech\DatabaseTable;
+use \Youtech\Authentication;
 
 class Joke
 {
     private $authorsTable;
     private $jokesTable;
+    private $authentication;
     public function __construct(
         DatabaseTable $jokesTable,
-        DatabaseTable $authorsTable
+        DatabaseTable $authorsTable,
+        Authentication $authentication
     ) {
         $this->jokesTable = $jokesTable;
         $this->authorsTable = $authorsTable;
+        $this->authentication = $authentication;
     }
     public function list()
     {
@@ -28,7 +32,8 @@ class Joke
                 'joketext' => $joke['joketext'],
                 'jokedate' => $joke['jokedate'],
                 'name' => $author['name'],
-                'email' => $author['email']
+                'email' => $author['email'],
+                'authorId' => $author['id']
             ];
         }
 
@@ -36,12 +41,15 @@ class Joke
         $title = 'Joke list';
 
         $totalJokes = $this->jokesTable->total();
+        $author = $this->authentication->getUser();
+
         return [
             'template' => 'jokes.html.php',
             'title' => $title,
             'variables' => [
                 'totalJokes' => $totalJokes,
-                'jokes' => $jokes
+                'jokes' => $jokes,
+                'userId' => $author['id'] ?? null
             ]
         ];
     }
@@ -58,9 +66,10 @@ class Joke
     }
     public function saveEdit()
     {
+        $author = $this->authentication->getUser();
         $joke = $_POST['joke'];
         $joke['jokedate'] = new \DateTime();
-        $joke['authorId'] = 1;
+        $joke['authorId'] = $author['id'];
         $this->jokesTable->save($joke);
         header('location: /joke/public/joke/list');
     }

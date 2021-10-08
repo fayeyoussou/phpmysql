@@ -36,7 +36,8 @@ class IjdbRoutes implements \Youtech\Routes
         $jokeController =
             new \Ijdb\Controllers\Joke(
                 $this->jokesTable,
-                $this->authorsTable
+                $this->authorsTable,
+                $this->authentication
             );
         $authorController = new \Ijdb\Controllers\Register($this->authorsTable);
         $loginController = new \Ijdb\Controllers\Login($this->authentication);
