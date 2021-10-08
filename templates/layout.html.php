@@ -11,10 +11,15 @@
       <h1>Internet Joke Database</h1>
     </header>
     <ul>
-      <li><a href="/joke/public/">Home</a></li>
-      <li><a href="/joke/public/joke/list">Jokes List</a></li>
-      <li><a href="/joke/public/joke/edit">Add a new Joke</a></li>
-    </ul>
+			<li><a href="/joke/public">Home</a></li>
+			<li><a href="/joke/public/joke/list">Jokes List</a></li>
+			<li><a href="/joke/public/joke/edit">Add a new Joke</a></li>
+			<?php if ($loggedIn): ?>
+			<li><a href="/joke/public/logout">Log out</a></li>
+			<?php else: ?>
+			<li><a href="/joke/public/login">Log in</a></li>
+			<?php endif; ?>
+		</ul>
   </nav>
 
   <main>

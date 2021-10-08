@@ -110,14 +110,16 @@ class IjdbRoutes implements \Youtech\Routes
                 'action' => 'success'
                 ],
                 'login' => true
+            ],
+            'logout' => [
+                'GET' => [
+                'controller' => $loginController,
+                'action' => 'logout'
                 ]
-                
-                
-
-
-
-
-        ];
+              ],
+              
+              
+                ];
 
         return $routes;
     }
