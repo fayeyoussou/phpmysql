@@ -4,84 +4,104 @@ namespace Ijdb;
 
 class IjdbRoutes implements \Youtech\Routes
 {
-    public function getRoutes()
+    private $authorsTable;
+    private $jokesTable;
+    private $authentication;
+    public function __construct()
     {
         include __DIR__ . '/../../includes/DatabaseConnection.php';
 
-        $jokesTable = new \youtech\DatabaseTable($pdo, 'joke', 'id');
-        $authorsTable = new \Youtech\DatabaseTable($pdo, 'author', 'id');
-        $jokeController = new \Ijdb\Controllers\Joke($jokesTable, $authorsTable);
-        $authorController = new \Ijdb\Controllers\Register($authorsTable);
+        $this->jokesTable = new \Youtech\DatabaseTable(
+            $pdo,
+            'joke',
+            'id'
+        );
+        $this->authorsTable = new \Youtech\DatabaseTable(
+            $pdo,
+            'author',
+            'id'
+        );
+        $this->authentication =
+            new \Youtech\Authentication(
+                $this->authorsTable,
+                'email',
+                'password'
+            );
+    }
 
+
+
+    public function getRoutes(): array
+    {
+        $jokeController =
+            new \Ijdb\Controllers\Joke(
+                $this->jokesTable,
+                $this->authorsTable
+            );
+        $authorController = new \Ijdb\Controllers\Register($this->authorsTable);
 
         $routes = [
-            'author/register'=>[
-                'POST'=> [
-                    'controller' => $authorController,
-                    'action' => 'registerUser'
-                ],
-                'GET'=> [
+            'author/register' => [
+                'GET' => [
                     'controller' => $authorController,
                     'action' => 'registrationForm'
                 ],
-                
-            ],
-            'author/success'=>[
-                'GET'=> [
+                'POST' => [
                     'controller' => $authorController,
-                    'action'=> 'success'
+                    'action' => 'registerUser'
                 ]
             ],
-			'joke/edit' => [
-				'POST' => [
-					'controller' => $jokeController,
-					'action' => 'saveEdit'
-				],
-				'GET' => [
-					'controller' => $jokeController,
-					'action' => 'edit'
-				]
-				
-			],
-			'joke/delete' => [
-				'POST' => [
-					'controller' => $jokeController,
-					'action' => 'delete'
-				]
-			],
-			'joke/list' => [
-				'GET' => [
-					'controller' => $jokeController,
-					'action' => 'list'
-				]
-			],
-			'' => [
-				'GET' => [
-					'controller' => $jokeController,
-					'action' => 'home'
-				]
-			]
-		];
-        return $routes;
-        $method = $_SERVER['REQUEST_METHOD'];
-        $controller = $routes[$route][$method]['controller'];
-        $action = $routes[$route][$method]['controller'];
-        return $controller->$action();
+            'author/success' => [
+                'GET' => [
+                    'controller' => $authorController,
+                    'action' => 'success'
+                ]
+            ],
+            'joke/edit' => [
+                'POST' => [
+                    'controller' => $jokeController,
+                    'action' => 'saveEdit'
+                ],
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'edit'
+                ],
+                'login' => true
 
-        /* if ($route === 'joke/list') {
-                    return (new \Ijdb\Controllers\Joke($jokesTable, $authorsTable))->list();
-                }
-                else if ($route === 'joke/edit') {
-                    return (new \Ijdb\Controllers\Joke($jokesTable, $authorsTable))->edit();
-                }
-                else if ($route === 'joke/delete') {
-                    return (new \Ijdb\Controllers\Joke($jokesTable, $authorsTable))->delete();
-                }
-                else if ($route === 'register') {
-                    return (new \Ijdb\Controllers\Register($authorsTable))->showForm();
-                }else
-                {
-                    return (new \Ijdb\Controllers\Joke($jokesTable, $authorsTable))->home();
-                } */
+            ],
+            'joke/delete' => [
+                'POST' => [
+                    'controller' => $jokeController,
+                    'action' => 'delete'
+                ],
+                'login' => true
+            ],
+            'joke/list' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'list'
+                ]
+            ],
+            '' => [
+                'GET' => [
+                    'controller' => $jokeController,
+                    'action' => 'home'
+                ]
+            ],
+            'login/error' => [
+                'GET' => [
+                    'controller' => $loginController,
+                    'action' => 'error'
+                ]
+            ]
+
+
+        ];
+
+        return $routes;
+    }
+    public function getAuthentication(): \Youtech\Authentication
+    {
+        return $this->authentication;
     }
 }
