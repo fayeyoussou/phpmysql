@@ -1,26 +1,26 @@
 <?php
 namespace Ijdb\Controllers;
-use \youtech\DatabaseTable;
+use \Youtech\DatabaseTable;
+
 class Register {
-    private $authorsTable;
-    public function __construct (DatabaseTable $authorsTable)
-    {
-        $this->authorsTable = $authorsTable;
-    }
-    public function registrationForm()
-    {
-        return [
-            'template' => 'register.html.php',
-            'title' => 'Register An Account'
-        ];
-    }
-    public function success() {
-        return [
-            'template' => 'registersuccess.html.php',
-            'title' => 'Registration Successfull'
-        ];
-    }
-    public function registerUser() {
+	private $authorsTable;
+
+	public function __construct(DatabaseTable $authorsTable) {
+		$this->authorsTable = $authorsTable;
+	}
+
+	public function registrationForm() {
+		return ['template' => 'register.html.php', 
+				'title' => 'Register an account'];
+	}
+
+
+	public function success() {
+		return ['template' => 'registersuccess.html.php', 
+			    'title' => 'Registration Successful'];
+	}
+
+	public function registerUser() {
 		$author = $_POST['author'];
 
 		//Assume the data is valid to begin with
@@ -60,11 +60,14 @@ class Register {
 
 		//If $valid is still true, no fields were blank and the data can be added
 		if ($valid == true) {
-			$author['password'] = password_hash($author['password'],PASSWORD_DEFAULT);
+			//Hash the password before saving it in the database
+			$author['password'] = password_hash($author['password'], PASSWORD_DEFAULT);
+
 			//When submitted, the $author variable now contains a lowercase value for email
+			//and a hashed password
 			$this->authorsTable->save($author);
 
-			header('Location: /joke/public/author/success');
+			header('Location: /author/success');
 		}
 		else {
 			//If the data is not valid, show the form again
@@ -77,5 +80,4 @@ class Register {
 				   ]; 
 		}
 	}
-
 }
