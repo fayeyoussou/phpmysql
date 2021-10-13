@@ -13,6 +13,10 @@ class Joke {
 	}
 
 	public function getAuthor() {
-		return $this->authorsTable->findById($this->authorId);
+		if (empty($this->author)) {
+			$this->author = $this->authorsTable->findById($this->authorId);
+		}
+		
+		return $this->author;
 	}
 }
