@@ -31,6 +31,7 @@ class Category {
 
 		header('location: /category/list');
 	}
+
 	public function list() {
 		$categories = $this->categoriesTable->findAll();
 
@@ -43,6 +44,7 @@ class Category {
 			  ]
 		];
 	}
+
 	public function delete() {
 		$this->categoriesTable->delete($_POST['id']);
 

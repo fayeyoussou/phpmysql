@@ -8,7 +8,7 @@ class Author {
 	public $password;
 	private $jokesTable;
 
-	public function __construct(\Youtech\DatabaseTable $jokeTable) {
+	public function __construct(\Ninja\DatabaseTable $jokeTable) {
 		$this->jokesTable = $jokeTable;
 	}
 
@@ -17,9 +17,8 @@ class Author {
 	}
 
 	public function addJoke($joke) {
-
 		$joke['authorId'] = $this->id;
 
-		$this->jokesTable->save($joke);
+		return $this->jokesTable->save($joke);
 	}
 }

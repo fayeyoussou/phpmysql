@@ -4,20 +4,22 @@ namespace Ijdb;
 class IjdbRoutes implements \Youtech\Routes {
 	private $authorsTable;
 	private $jokesTable;
-	private $authentication;
 	private $categoriesTable;
+	private $jokeCategoriesTable;
+	private $authentication;
 
 	public function __construct() {
 		include __DIR__ . '/../../includes/DatabaseConnection.php';
 
-		$this->jokesTable = new \Youtech\DatabaseTable($pdo, 'joke', 'id', '\Ijdb\Entity\Joke', [&$this->authorsTable]);
+		$this->jokesTable = new \Youtech\DatabaseTable($pdo, 'joke', 'id', '\Ijdb\Entity\Joke', [&$this->authorsTable, &$this->jokeCategoriesTable]);
  		$this->authorsTable = new \Youtech\DatabaseTable($pdo, 'author', 'id', '\Ijdb\Entity\Author', [&$this->jokesTable]);
  		$this->categoriesTable = new \Youtech\DatabaseTable($pdo, 'category', 'id');
+ 		$this->jokeCategoriesTable = new \Youtech\DatabaseTable($pdo, 'joke_category', 'categoryId');
 		$this->authentication = new \Youtech\Authentication($this->authorsTable, 'email', 'password');
 	}
 
 	public function getRoutes(): array {
-		$jokeController = new \Ijdb\Controllers\Joke($this->jokesTable, $this->authorsTable,$this->categoriesTable, $this->authentication);
+		$jokeController = new \Ijdb\Controllers\Joke($this->jokesTable, $this->authorsTable, $this->categoriesTable, $this->authentication);
 		$authorController = new \Ijdb\Controllers\Register($this->authorsTable);
 		$loginController = new \Ijdb\Controllers\Login($this->authentication);
 		$categoryController = new \Ijdb\Controllers\Category($this->categoriesTable);

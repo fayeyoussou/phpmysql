@@ -35,8 +35,6 @@ class Login {
 	}
 
 	public function logout() {
-		// unset($_POST);
-		$_SESSION = [];
 		unset($_SESSION);
 		return ['template' => 'logout.html.php', 'title' => 'You have been logged out'];
 	}
