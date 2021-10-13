@@ -102,6 +102,20 @@ class IjdbRoutes implements \Youtech\Routes {
 				],
 				'login' => true
 			],
+			'category/delete' => [
+				'POST' => [
+					'controller' => $categoryController,
+					'action' => 'delete'
+				],
+				'login' => true
+			],
+			'category/list' => [
+				'GET' => [
+					'controller' => $categoryController,
+					'action' => 'list'
+				],
+				'login' => true
+			],
 			'' => [
 				'GET' => [
 					'controller' => $jokeController,
