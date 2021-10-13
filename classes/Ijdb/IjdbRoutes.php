@@ -1,17 +1,19 @@
 <?php
 namespace Ijdb;
 
-class IjdbRoutes implements \Ninja\Routes {
+class IjdbRoutes implements \Youtech\Routes {
 	private $authorsTable;
 	private $jokesTable;
 	private $authentication;
+	private $categoriesTable;
 
 	public function __construct() {
 		include __DIR__ . '/../../includes/DatabaseConnection.php';
 
-		$this->jokesTable = new \Ninja\DatabaseTable($pdo, 'joke', 'id', '\Ijdb\Entity\Joke', [&$this->authorsTable]);
- 		$this->authorsTable = new \Ninja\DatabaseTable($pdo, 'author', 'id', '\Ijdb\Entity\Author', [&$this->jokesTable]);
-		$this->authentication = new \Ninja\Authentication($this->authorsTable, 'email', 'password');
+		$this->jokesTable = new \Youtech\DatabaseTable($pdo, 'joke', 'id', '\Ijdb\Entity\Joke', [&$this->authorsTable]);
+ 		$this->authorsTable = new \Youtech\DatabaseTable($pdo, 'author', 'id', '\Ijdb\Entity\Author', [&$this->jokesTable]);
+		$this->authentication = new \Youtech\Authentication($this->authorsTable, 'email', 'password');
+		$this->categoriesTable = new \Youtech\DatabaseTable($pdo, 'category', 'id');
 	}
 
 	public function getRoutes(): array {
@@ -100,7 +102,7 @@ class IjdbRoutes implements \Ninja\Routes {
 		return $routes;
 	}
 
-	public function getAuthentication(): \Ninja\Authentication {
+	public function getAuthentication(): \Youtech\Authentication {
 		return $this->authentication;
 	}
 
