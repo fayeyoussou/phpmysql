@@ -13,7 +13,7 @@ class IjdbRoutes implements \Youtech\Routes {
 
 		$this->jokesTable = new \Youtech\DatabaseTable($pdo, 'joke', 'id', '\Ijdb\Entity\Joke', [&$this->authorsTable, &$this->jokeCategoriesTable]);
  		$this->authorsTable = new \Youtech\DatabaseTable($pdo, 'author', 'id', '\Ijdb\Entity\Author', [&$this->jokesTable]);
- 		$this->categoriesTable = new \Youtech\DatabaseTable($pdo, 'category', 'id');
+ 		$this->categoriesTable = new \Youtech\DatabaseTable($pdo, 'category', 'id', '\Ijdb\Entity\Category', [&$this->jokesTable, &$this->jokeCategoriesTable]);
  		$this->jokeCategoriesTable = new \Youtech\DatabaseTable($pdo, 'joke_category', 'categoryId');
 		$this->authentication = new \Youtech\Authentication($this->authorsTable, 'email', 'password');
 	}

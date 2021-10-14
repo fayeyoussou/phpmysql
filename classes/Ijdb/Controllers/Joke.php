@@ -17,7 +17,16 @@ class Joke {
 	}
 
 	public function list() {
-		$jokes = $this->jokesTable->findAll();
+
+		if (isset($_GET['category']))
+		{
+			$category = $this->categoriesTable->findById($_GET['category']);
+			$jokes = $category->getJokes();
+		}
+		else
+		{
+			$jokes = $this->jokesTable->findAll();  
+		}		
 
 		$title = 'Joke list';
 
@@ -65,6 +74,8 @@ class Joke {
 		$joke['jokedate'] = new \DateTime();
 
 		$jokeEntity = $author->addJoke($joke);
+
+		$jokeEntity->clearCategories();
 
 		foreach ($_POST['category'] as $categoryId) {
 			$jokeEntity->addCategory($categoryId);
