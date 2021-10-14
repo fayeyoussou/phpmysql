@@ -13,7 +13,7 @@
 
 <?php foreach($jokes as $joke): ?>
 <blockquote>
-  <?=(new \Ninja\Markdown($joke->joketext))->toHtml()?>
+  <?=(new \Youtech\Markdown($joke->joketext))->toHtml()?>
 
     (by <a href="mailto:<?=htmlspecialchars($joke->getAuthor()->email, ENT_QUOTES,
                     'UTF-8'); ?>">
@@ -38,5 +38,22 @@ echo $date->format('jS F Y');
 <?php endif; ?>
 </blockquote>
 <?php endforeach; ?>
+
+
+
+Select page: 
+
+<?php
+
+$numPages = ceil($totalJokes/10);
+
+for ($i = 1; $i <= $numPages; $i++):
+  if ($i == $currentPage):
+?>
+  <a class="currentpage" href="/joke/list?page=<?=$i?><?=!empty($categoryId) ? '&category=' . $categoryId : '' ?>"><?=$i?></a>
+<?php else: ?>
+  <a href="/joke/list?page=<?=$i?><?=!empty($categoryId) ? '&category=' . $categoryId : '' ?>"><?=$i?></a>
+<?php endif; ?>
+<?php endfor; ?>
 
 </div>

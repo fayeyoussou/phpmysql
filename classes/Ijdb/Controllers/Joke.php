@@ -18,19 +18,23 @@ class Joke {
 
 	public function list() {
 
-		if (isset($_GET['category']))
-		{
+		$page = $_GET['page'] ?? 1;
+
+		$offset = ($page-1)*10;
+
+		if (isset($_GET['category'])) {
 			$category = $this->categoriesTable->findById($_GET['category']);
-			$jokes = $category->getJokes();
+			$jokes = $category->getJokes(10, $offset);
+			$totalJokes = $category->getNumJokes();
 		}
-		else
-		{
-			$jokes = $this->jokesTable->findAll();  
+		else {
+			$jokes = $this->jokesTable->findAll('jokedate DESC', 10, $offset);
+			$totalJokes = $this->jokesTable->total();
 		}		
 
 		$title = 'Joke list';
 
-		$totalJokes = $this->jokesTable->total();
+		
 
 		$author = $this->authentication->getUser();
 
@@ -40,7 +44,9 @@ class Joke {
 						'totalJokes' => $totalJokes,
 						'jokes' => $jokes,
 						'user' => $author,
-						'categories' => $this->categoriesTable->findAll()
+						'categories' => $this->categoriesTable->findAll(),
+						'currentPage' => $page,
+						'categoryId' => $_GET['category'] ?? null
 					]
 				];
 	}
