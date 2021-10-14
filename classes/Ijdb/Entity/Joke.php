@@ -10,7 +10,7 @@ class Joke {
 	private $author;
 	private $jokeCategoriesTable;
 
-	public function __construct(\Youtech\DatabaseTable $authorsTable, \Youtech\DatabaseTable $jokeCategoriesTable) {
+	public function __construct(\Ninja\DatabaseTable $authorsTable, \Ninja\DatabaseTable $jokeCategoriesTable) {
 		$this->authorsTable = $authorsTable;
 		$this->jokeCategoriesTable = $jokeCategoriesTable;
 	}

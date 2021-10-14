@@ -1,5 +1,5 @@
 <?php
-namespace Youtech;
+namespace youtech;
 
 class Authentication {
 	private $users;

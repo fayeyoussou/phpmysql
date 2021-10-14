@@ -159,6 +159,7 @@ class IjdbRoutes implements \Youtech\Routes {
 	public function getAuthentication(): \Youtech\Authentication {
 		return $this->authentication;
 	}
+
 	public function checkPermission($permission): bool {
 		$user = $this->authentication->getUser();
 

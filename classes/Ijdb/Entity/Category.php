@@ -1,7 +1,7 @@
 <?php
 namespace Ijdb\Entity;
 
-use Youtech\DatabaseTable;
+use Ninja\DatabaseTable;
 
 class Category {
 	public $id;
